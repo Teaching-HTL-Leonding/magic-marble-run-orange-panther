@@ -1,8 +1,9 @@
 ﻿string marbleRun = args[0];
-int segments = 0, teleports = 0;
+int segments = 0, teleports = 0, index = 0, arrayCount = 0;
 char symbol = ' ';
+var indexes = new int[marbleRun.Length];
+bool doAgain = true;
 
-int index = 0;
 do
 {
     switch (marbleRun[index])
@@ -44,9 +45,26 @@ do
             }
             break;
     }
-} while (index < marbleRun.Length);
+    if (!IsValidMarbleRun(index, indexes)) { doAgain = false; }
+    else
+    {
+        indexes[arrayCount] = index;
+        arrayCount++;
+    }
+} while (index < marbleRun.Length && doAgain);
 
+if (!doAgain)
+{
+    Console.WriteLine("Oh no, the marble is running in a loop! The program will end now.");
+    Environment.Exit(0);
+}
 Console.WriteLine($"segments: {segments}\nteleports: {teleports}");
+
+bool IsValidMarbleRun(int position, int[] indexes)
+{
+    if (indexes.Contains(position)) { return false; }
+    else { return true; }
+}
 
 // int ChangeHexToDecimal(string hex)
 // {
